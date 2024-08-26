@@ -27,7 +27,7 @@ pip install selective_optimizers
 
 To install the selective_optimizers package, simply run:
 ```bash
-pip install selective_optimizers
+pip install selective-optimizers
 ```
 ## Usage
 
@@ -118,12 +118,13 @@ This project is licensed under the MIT License. See the LICENSE file for details
 If you use this toolkit in your research, please cite our paper:
 
 ```sql
-@inproceedings{yourpaper2024,
+@article{Agarwal2024_step_by_step,
   title={Step-by-Step Unmasking for Parameter-Efficient Fine-tuning of Large Language Models},
-  author={Your Name and Co-authors},
-  booktitle={Conference Name},
-  year={2024}
+  author={Aradhye Agarwal and Suhas Kamasetty Ramesh and Ayan Sengupta and Tanmoy Chakraborty}
+  journal={arXiv preprint arXiv:XXXX.XXXXX},
+  year={2024},
 }
+
 ``````
 ## Contact
 For any questions or issues, feel free to open an issue on the GitHub repository or contact us directly.
