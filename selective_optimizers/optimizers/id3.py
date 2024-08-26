@@ -40,8 +40,8 @@ def get_id3(base_optimizer):
             metric = grad.abs()/(self.eps+data.abs())**self.exp
             return metric
         
-        def step(self):
-            super().step()
+        def step(self, *args, **kwargs):
+            super().step(*args, **kwargs)
             self.global_step += 1
         
         @torch.no_grad()
