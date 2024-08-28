@@ -121,7 +121,7 @@ If you use this toolkit in your research, please cite our paper:
 @article{Agarwal2024_step_by_step,
   title={Step-by-Step Unmasking for Parameter-Efficient Fine-tuning of Large Language Models},
   author={Aradhye Agarwal and Suhas Kamasetty Ramesh and Ayan Sengupta and Tanmoy Chakraborty}
-  journal={arXiv preprint arXiv:XXXX.XXXXX},
+  journal={arXiv preprint arXiv:2408.14470},
   year={2024},
 }
 
