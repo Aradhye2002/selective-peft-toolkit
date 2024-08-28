@@ -64,7 +64,7 @@ optimizer = optimizer_class(
 
 # Optional post-training work for validation
 optimizer.post_train_work()
-print("Budget used:", optimizer.get_budget())
+print("Budget used:", optimizer.get_budget_used())
 
 # Save the summary of modified weights
 summary = optimizer.get_summary(model)
