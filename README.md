@@ -85,7 +85,7 @@ model = ...
 summary = load_summary_from_disk("path/to/summary.pth")
 
 # Apply the modified weights from the summary to the model
-model = load_weights_from_summary(model, summary)
+load_weights_from_summary(model, summary)
 
 # Usual inference code
 
