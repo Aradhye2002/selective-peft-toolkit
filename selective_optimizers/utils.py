@@ -1,41 +1,45 @@
 import torch
 
-def get_chosen(param, chosen_tensor):
-    # param is a 1d or 2d tensor and chosen_list is a list of corresponding indices
-    # returns a flattened tensor of chosen parameters from param according to the chosen_list
-    if (chosen_tensor):
-        ndim = param.ndim
-        if ndim == 1:
-            chosen = param[chosen_tensor[:, 0]]
-        elif ndim == 2:
-            chosen = param[chosen_tensor[:, 0], chosen_tensor[:, 1]]
-        elif ndim == 3:
-            chosen = param[chosen_tensor[:, 0], chosen_tensor[:, 1], chosen_tensor[:, 2]]
-        elif ndim == 4:
-            chosen = param[chosen_tensor[:, 0], chosen_tensor[:, 1], chosen_tensor[:, 2], chosen_tensor[:, 3]]
-        else:
-            raise NotImplementedError
-    else:
-        chosen = torch.tensor([])
-    return chosen
+def get_chosen(param, chosen_indices):
+    """
+    Retrieve the values of the chosen indices from the parameter tensor.
 
-def set_chosen(param, chosen_tensor, values):
-    # param is a 1d or 2d tensor and chosen_list is a list of corresponding indices
-    # values is the tensor of values to which the chosen indices in param is to be set
-    if (len(chosen_tensor) > 0):
-        ndim = param.ndim
-        if ndim == 1:
-            param[chosen_tensor[:, 0]] = values
-        elif ndim == 2:
-            param[chosen_tensor[:, 0], chosen_tensor[:, 1]] = values
-        elif ndim == 3:
-            param[chosen_tensor[:, 0], chosen_tensor[:, 1], chosen_tensor[:, 2]] = values
-        elif ndim == 4:
-            param[chosen_tensor[:, 0], chosen_tensor[:, 1], chosen_tensor[:, 2], chosen_tensor[:, 3]] = values
-        else:
-            raise NotImplementedError
+    Args:
+        param (torch.Tensor): The parameter tensor.
+        chosen_indices (torch.Tensor): Tensor of indices indicating the chosen elements.
+
+    Returns:
+        torch.Tensor: Flattened tensor of chosen parameter values.
+    """
+    if chosen_indices.numel() == 0:
+        return torch.tensor([], device=param.device)
+    else:
+        return param[tuple(chosen_indices.t())]
+
+def set_chosen(param, chosen_indices, values):
+    """
+    Set the values of the chosen indices in the parameter tensor.
+
+    Args:
+        param (torch.Tensor): The parameter tensor.
+        chosen_indices (torch.Tensor): Tensor of indices indicating where to set values.
+        values (torch.Tensor): Values to set at the chosen indices.
+    """
+    if chosen_indices.numel() == 0:
+        return
+    else:
+        param[tuple(chosen_indices.t())] = values
 
 def get_not_chosen(param, chosen_mask):
-    not_chosen_mask = torch.logical_not(chosen_mask)
-    chosen = param[not_chosen_mask]
-    return chosen    
+    """
+    Retrieve the values of the not chosen elements from the parameter tensor.
+
+    Args:
+        param (torch.Tensor): The parameter tensor.
+        chosen_mask (torch.Tensor): Boolean mask where True indicates chosen elements.
+
+    Returns:
+        torch.Tensor: Flattened tensor of not chosen parameter values.
+    """
+    not_chosen_values = param[~chosen_mask]
+    return not_chosen_values

@@ -1,0 +1,9 @@
+*.pyc
+**/__pycache__
+**/wandb
+**/*.egg-info
+**/*.pt
+**/data
+**/build
+**/temp*
+**/vit-finetuned
