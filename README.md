@@ -1,5 +1,7 @@
 # Selective PEFT Toolkit
 
+![Neon Bonsai](assets/neon-bonsai.jpg)
+
 ## Overview
 
 Welcome to the `selective-peft-toolkit`, the official implementation for the paper **"Step-by-Step Unmasking for Parameter-Efficient Fine-tuning of Large Language Models."** This toolkit provides a flexible framework for selectively fine-tuning large language models using different selective Parameter-Efficient Fine-Tuning (PEFT) methods.
