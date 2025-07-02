@@ -61,8 +61,6 @@ def get_id3(base_optimizer):
             for param_group in self.param_groups:
                 if "choose_all" in param_group and param_group["choose_all"]:
                     mode = 0
-                elif "choose_none" in param_group and param_group["choose_none"]:
-                    mode = 1
                 else:
                     mode = 2
                 chosen_masks = []
@@ -72,9 +70,6 @@ def get_id3(base_optimizer):
                             # Create a mask of ones (True), of the same shape as the parameter
                             mask = torch.ones_like(param.data, dtype=torch.bool, device=param.device)
                             used_budget += param.numel()
-                        elif mode == 1:
-                            param.requires_grad = False
-                            mask = None
                         else:
                             # Create a mask of zeros (False), of the same shape as the parameter
                             mask = torch.zeros_like(param.data, dtype=torch.bool, device=param.device)
@@ -117,8 +112,6 @@ def get_id3(base_optimizer):
             for param_group in self.param_groups:
                 if "choose_all" in param_group and param_group["choose_all"]:
                     continue
-                elif "choose_none" in param_group and param_group["choose_none"]:
-                    continue
                 else:
                     pass
                 for param, chosen_mask in zip(param_group["params"], param_group["chosen_masks"]):
@@ -147,8 +140,6 @@ def get_id3(base_optimizer):
                     break
                 if "choose_all" in param_group and param_group["choose_all"]:
                     continue
-                elif "choose_none" in param_group and param_group["choose_none"]:
-                    continue
                 else:
                     for param, chosen_mask in zip(param_group["params"], param_group["chosen_masks"]):
                         if chosen_mask is None:
@@ -163,7 +154,7 @@ def get_id3(base_optimizer):
                         if curr_chosen > num_unmask:
                             excess = curr_chosen - num_unmask
                             # Find indices of chosen parameters to unmask
-                            indices_to_unmask = chosen_mask.nonzero()[:excess]
+                            indices_to_unmask = new_mask.nonzero()[:excess]
                             set_chosen(chosen_mask, indices_to_unmask, False)
                             curr_chosen -= excess
                             if curr_chosen == num_unmask:

@@ -89,13 +89,10 @@ optimizer_class = get_selective_optimizer(opt, peft_to_use)
 params = [
     {"params": list_of_params_1, "choose_all": True},
     {"params": list_of_params_2},
-    {"params": list_of_params_2, "choose_none": True},
 ]
 
 # 'choose_all': Select all parameters in this group (useful for randomly initialized heads like classification layers).
-# 'choose_none': Select no parameters in this group (useful for pretrained layers you want untouched, like embedding layers).
-# If neither 'choose_all' nor 'choose_none' is specified, selection follows the chosen PEFT method.
-# 'choose_all' and 'choose_none' are not allowed to be both True in the same parameter group.
+# If 'choose_all' is not specified or is set to False, selection follows the chosen PEFT method.
 
 # Initialize the optimizer with additional selective parameters
 optimizer = optimizer_class(
@@ -170,7 +167,7 @@ The `examples/` directory contains scripts demonstrating the use of selective op
 
 - In the `vit_lora_{trainer, no_trainer}.py` files we have to explicitly set the classifier head to trainable post-creation of the PeftModel (created using `get_peft_model()`). This is because the `get_peft_model()` method automatically sets non-lora layers as not trainable which is not desirable for the classifier since it is initialized from scratch.
 
-- For parameters initialized from scratch—such as the ViT classifier head in examples 1-4—you would almost always want the full parameter to be trainable, since it has been randomly initialized. LoRA layers are another such example. This is however minor since these are automatically marked trainable upon injection.
+- For parameters initialized from scratch—such as the ViT classifier head in examples 1-4—you would almost always want the full parameter to be trainable, since it has been randomly initialized. LoRA layers are another such example. This is, however, minor since these are automatically marked trainable upon injection.
 
 - If you are loading a summary for a selectively fine-tuned model into a pretrained model, it is essential to ensure that all modules have the same initialization as during training. For pretrained modules such as key, query and value matrices this is guaranteed; for other parameters like classifier heads and lora matrices, however, this is not (since these are initialized from scratch). Therefore it is essential to have the same seed during inference and training (in case seperate scripts are used). This can be achieved using the following snippet:
 

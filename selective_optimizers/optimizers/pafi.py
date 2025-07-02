@@ -32,12 +32,6 @@ def get_pafi(base_optimizer):
                     for param in param_group["params"]:
                         if param.requires_grad:
                             total_chosen += param.numel()
-
-                elif param_group.get("choose_none", False):
-                    # We'll skip them; they won't be chosen
-                    # Could also set `param.requires_grad = False` if you want
-                    pass
-
                 else:
                     # Mode=2 group
                     for param in param_group["params"]:
@@ -67,7 +61,7 @@ def get_pafi(base_optimizer):
             if len(all_abs) > 0:
                 all_abs = torch.cat(all_abs, dim=0)
             else:
-                # If no mode=2 params, we can just assign masks for choose_all / choose_none below
+                # If no mode=2 params, we can just assign masks for choose_all below
                 all_abs = torch.tensor([], device=device)
 
             # --------------------------------------------------
@@ -127,15 +121,6 @@ def get_pafi(base_optimizer):
                         else:
                             chosen_masks.append(None)
                     param_group["chosen_masks"] = chosen_masks
-
-                elif param_group.get("choose_none", False):
-                    # None are chosen
-                    chosen_masks = []
-                    for param in param_group["params"]:
-                        chosen_masks.append(None)
-                        param.requires_grad = False
-                    param_group["chosen_masks"] = chosen_masks
-
                 else:
                     # mode=2 group
                     chosen_masks = []

@@ -48,7 +48,10 @@ def create_summary_from_param_groups(param_groups, model):
             param2info[id(param)] = info
     
     for param in model.parameters():
-        chosen_values, chosen_indices, shape = param2info[id(param)]
+        if id(param) in param2info:
+            chosen_values, chosen_indices, shape = param2info[id(param)]
+        else:
+            chosen_values, chosen_indices, shape = None, None, None
         values.append(chosen_values)
         pointers.append(chosen_indices)
         shapes.append(shape)
@@ -80,7 +83,7 @@ def load_weights_from_summary(model: nn.Module, summary: SelectivePeftSummary):
 
     # Load sparse parameter weights
     idx = 0
-    for n, param in model.named_parameters():
+    for param in model.parameters():
         if values[idx] is not None:
             device = param.device
             chosen_values = values[idx].to(device)

@@ -35,9 +35,6 @@ def get_bitfit(base_optimizer):
                         if param_group.get("choose_all", False):
                             mask = torch.ones_like(param.data, dtype=torch.bool, device=param.device)
                             total_chosen += mask.numel()
-                        elif param_group.get("choose_none", False):
-                            param.requires_grad = False
-                            mask = None
                         else:
                             param_size = param.numel()
 
